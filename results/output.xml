@@ -1,0 +1,988 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.0.4 (Python 3.6.5 on win32)" generated="20180522 14:51:11.649">
+<suite id="s1" name="Kuber" source="C:\Users\kushwahr\PycharmProjects\robot\kuber.robot">
+<kw name="Open Connection And Log In" type="setup">
+<kw name="Open Connection" library="SSHLibrary">
+<doc>Opens a new SSH connection to the given ``host`` and ``port``.</doc>
+<arguments>
+<arg>${HOST}</arg>
+</arguments>
+<status status="PASS" starttime="20180522 14:51:12.067" endtime="20180522 14:51:12.067"></status>
+</kw>
+<kw name="Login" library="SSHLibrary">
+<doc>Logs into the SSH server with the given ``username`` and ``password``.</doc>
+<arguments>
+<arg>${USERNAME}</arg>
+<arg>${PASSWORD}</arg>
+</arguments>
+<msg timestamp="20180522 14:51:12.067" level="INFO">Logging into '174.138.54.154:22' as 'root'.</msg>
+<msg timestamp="20180522 14:51:15.541" level="INFO">Read output: Welcome to Ubuntu 16.04.4 LTS (GNU/Linux 4.4.0-124-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+10 packages can be updated.
+1 update is a security update.
+
+
+Last login: Tue May 22 08:20:11 2018 from 216.240.30.23
+root@master:~#</msg>
+<status status="PASS" starttime="20180522 14:51:12.067" endtime="20180522 14:51:15.541"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:12.067" endtime="20180522 14:51:15.541"></status>
+</kw>
+<test id="s1-t1" name="Test Login">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>echo Hello SSHLibrary!</arg>
+</arguments>
+<assign>
+<var>${output}</var>
+</assign>
+<msg timestamp="20180522 14:51:15.545" level="INFO">Executing command 'echo Hello SSHLibrary!'.</msg>
+<msg timestamp="20180522 14:51:15.969" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20180522 14:51:15.970" level="INFO">${output} = Hello SSHLibrary!</msg>
+<status status="PASS" starttime="20180522 14:51:15.544" endtime="20180522 14:51:15.970"></status>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<doc>Fails if the given objects are unequal.</doc>
+<arguments>
+<arg>${output}</arg>
+<arg>Hello SSHLibrary!</arg>
+</arguments>
+<status status="PASS" starttime="20180522 14:51:15.972" endtime="20180522 14:51:15.973"></status>
+</kw>
+<doc>Execute Command can be used to ran commands on the remote machine.</doc>
+<status status="PASS" starttime="20180522 14:51:15.542" endtime="20180522 14:51:15.990" critical="yes"></status>
+</test>
+<test id="s1-t2" name="Get Nodes list">
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>${get_nodes}</arg>
+</arguments>
+<assign>
+<var>${output}</var>
+</assign>
+<msg timestamp="20180522 14:51:15.992" level="INFO">Executing command 'kubectl get nodes'.</msg>
+<msg timestamp="20180522 14:51:17.381" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20180522 14:51:17.381" level="INFO">${output} = NAME      STATUS    ROLES     AGE       VERSION
+master    Ready     master    23d       v1.10.2
+node-01   Ready     &lt;none&gt;    23d       v1.10.2
+node-02   Ready     &lt;none&gt;    23d       v1.10.2
+node-03 ...</msg>
+<status status="PASS" starttime="20180522 14:51:15.992" endtime="20180522 14:51:17.381"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${output}</arg>
+</arguments>
+<msg timestamp="20180522 14:51:17.382" level="INFO">NAME      STATUS    ROLES     AGE       VERSION
+master    Ready     master    23d       v1.10.2
+node-01   Ready     &lt;none&gt;    23d       v1.10.2
+node-02   Ready     &lt;none&gt;    23d       v1.10.2
+node-03   Ready     &lt;none&gt;    23d       v1.10.2</msg>
+<status status="PASS" starttime="20180522 14:51:17.382" endtime="20180522 14:51:17.383"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${node_list}</arg>
+</arguments>
+<msg timestamp="20180522 14:51:17.384" level="INFO">['master', 'node-01', 'node-02', 'node-03']</msg>
+<status status="PASS" starttime="20180522 14:51:17.383" endtime="20180522 14:51:17.384"></status>
+</kw>
+<kw name="Split String" library="String">
+<doc>Splits the ``string`` using ``separator`` as a delimiter string.</doc>
+<arguments>
+<arg>${output}</arg>
+</arguments>
+<assign>
+<var>${output_list}</var>
+</assign>
+<msg timestamp="20180522 14:51:17.385" level="INFO">${output_list} = ['NAME', 'STATUS', 'ROLES', 'AGE', 'VERSION', 'master', 'Ready', 'master', '23d', 'v1.10.2', 'node-01', 'Ready', '&lt;none&gt;', '23d', 'v1.10.2', 'node-02', 'Ready', '&lt;none&gt;', '23d', 'v1.10.2', 'node-03', ...</msg>
+<status status="PASS" starttime="20180522 14:51:17.384" endtime="20180522 14:51:17.385"></status>
+</kw>
+<kw name="${ITEM} IN [ @{node_list} ]" type="for">
+<kw name="${ITEM} = master" type="foritem">
+<kw name="Should Contain" library="BuiltIn">
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<arguments>
+<arg>${output}</arg>
+<arg>${ITEM}</arg>
+</arguments>
+<status status="PASS" starttime="20180522 14:51:17.386" endtime="20180522 14:51:17.386"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:17.386" endtime="20180522 14:51:17.386"></status>
+</kw>
+<kw name="${ITEM} = node-01" type="foritem">
+<kw name="Should Contain" library="BuiltIn">
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<arguments>
+<arg>${output}</arg>
+<arg>${ITEM}</arg>
+</arguments>
+<status status="PASS" starttime="20180522 14:51:17.387" endtime="20180522 14:51:17.387"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:17.386" endtime="20180522 14:51:17.387"></status>
+</kw>
+<kw name="${ITEM} = node-02" type="foritem">
+<kw name="Should Contain" library="BuiltIn">
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<arguments>
+<arg>${output}</arg>
+<arg>${ITEM}</arg>
+</arguments>
+<status status="PASS" starttime="20180522 14:51:17.387" endtime="20180522 14:51:17.388"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:17.387" endtime="20180522 14:51:17.388"></status>
+</kw>
+<kw name="${ITEM} = node-03" type="foritem">
+<kw name="Should Contain" library="BuiltIn">
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<arguments>
+<arg>${output}</arg>
+<arg>${ITEM}</arg>
+</arguments>
+<status status="PASS" starttime="20180522 14:51:17.388" endtime="20180522 14:51:17.388"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:17.388" endtime="20180522 14:51:17.388"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:17.386" endtime="20180522 14:51:17.388"></status>
+</kw>
+<doc>Get the the list of number of Nodes.</doc>
+<status status="PASS" starttime="20180522 14:51:15.991" endtime="20180522 14:51:17.389" critical="yes"></status>
+</test>
+<test id="s1-t3" name="create deployment">
+<kw name="create_deployment">
+<arguments>
+<arg>${deployment_name1}</arg>
+</arguments>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>${create_deployment} ${deployment_name}</arg>
+</arguments>
+<assign>
+<var>${output}</var>
+</assign>
+<msg timestamp="20180522 14:51:17.401" level="INFO">Executing command 'kubectl create -f frontend-deployment.yaml'.</msg>
+<msg timestamp="20180522 14:51:18.350" level="INFO">Command exited with return code 1.</msg>
+<msg timestamp="20180522 14:51:18.350" level="INFO">${output} = </msg>
+<status status="PASS" starttime="20180522 14:51:17.401" endtime="20180522 14:51:18.350"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${output}</arg>
+</arguments>
+<msg timestamp="20180522 14:51:18.351" level="INFO"></msg>
+<status status="PASS" starttime="20180522 14:51:18.350" endtime="20180522 14:51:18.351"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:17.401" endtime="20180522 14:51:18.351"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>${get_deployment}</arg>
+</arguments>
+<assign>
+<var>${deployment_list}</var>
+</assign>
+<msg timestamp="20180522 14:51:18.352" level="INFO">Executing command 'kubectl get deployments'.</msg>
+<msg timestamp="20180522 14:51:19.626" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20180522 14:51:19.626" level="INFO">${deployment_list} = NAME                  DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+frontend              4         4         4            4           1h
+kube-ops-view         1         1         1            1   ...</msg>
+<status status="PASS" starttime="20180522 14:51:18.351" endtime="20180522 14:51:19.626"></status>
+</kw>
+<kw name="Split String" library="String">
+<doc>Splits the ``string`` using ``separator`` as a delimiter string.</doc>
+<arguments>
+<arg>${deployment_list}</arg>
+</arguments>
+<assign>
+<var>${deployment_list}</var>
+</assign>
+<msg timestamp="20180522 14:51:19.628" level="INFO">${deployment_list} = ['NAME', 'DESIRED', 'CURRENT', 'UP-TO-DATE', 'AVAILABLE', 'AGE', 'frontend', '4', '4', '4', '4', '1h', 'kube-ops-view', '1', '1', '1', '1', '23d', 'kube-ops-view-redis', '1', '1', '1', '1', '23d', 'lo...</msg>
+<status status="PASS" starttime="20180522 14:51:19.627" endtime="20180522 14:51:19.628"></status>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<arguments>
+<arg>${deployment_list}</arg>
+<arg>${deployment_label}</arg>
+</arguments>
+<status status="PASS" starttime="20180522 14:51:19.634" endtime="20180522 14:51:19.634"></status>
+</kw>
+<doc>Create deployment.</doc>
+<tags>
+<tag>test1</tag>
+</tags>
+<status status="PASS" starttime="20180522 14:51:17.400" endtime="20180522 14:51:19.635" critical="yes"></status>
+</test>
+<test id="s1-t4" name="Delete deployment">
+<kw name="delete_deployment">
+<arguments>
+<arg>${deployment_label}</arg>
+</arguments>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>${delete_deployment} ${deployment_label}</arg>
+</arguments>
+<assign>
+<var>${output}</var>
+</assign>
+<msg timestamp="20180522 14:51:19.637" level="INFO">Executing command 'kubectl delete deployment frontend'.</msg>
+<msg timestamp="20180522 14:51:21.637" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20180522 14:51:21.637" level="INFO">${output} = deployment.extensions "frontend" deleted</msg>
+<status status="PASS" starttime="20180522 14:51:19.637" endtime="20180522 14:51:21.637"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${output}</arg>
+</arguments>
+<msg timestamp="20180522 14:51:21.638" level="INFO">deployment.extensions "frontend" deleted</msg>
+<status status="PASS" starttime="20180522 14:51:21.637" endtime="20180522 14:51:21.638"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:19.636" endtime="20180522 14:51:21.638"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>${get_deployment}</arg>
+</arguments>
+<assign>
+<var>${deployment_list}</var>
+</assign>
+<msg timestamp="20180522 14:51:21.639" level="INFO">Executing command 'kubectl get deployments'.</msg>
+<msg timestamp="20180522 14:51:22.867" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20180522 14:51:22.867" level="INFO">${deployment_list} = NAME                  DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+kube-ops-view         1         1         1            1           23d
+kube-ops-view-redis   1         1         1            1  ...</msg>
+<status status="PASS" starttime="20180522 14:51:21.639" endtime="20180522 14:51:22.867"></status>
+</kw>
+<kw name="Split String" library="String">
+<doc>Splits the ``string`` using ``separator`` as a delimiter string.</doc>
+<arguments>
+<arg>${deployment_list}</arg>
+</arguments>
+<assign>
+<var>${deployment_list}</var>
+</assign>
+<msg timestamp="20180522 14:51:22.868" level="INFO">${deployment_list} = ['NAME', 'DESIRED', 'CURRENT', 'UP-TO-DATE', 'AVAILABLE', 'AGE', 'kube-ops-view', '1', '1', '1', '1', '23d', 'kube-ops-view-redis', '1', '1', '1', '1', '23d', 'load-generator', '1', '1', '1', '1', '21...</msg>
+<status status="PASS" starttime="20180522 14:51:22.868" endtime="20180522 14:51:22.868"></status>
+</kw>
+<kw name="Should Not Contain" library="BuiltIn">
+<doc>Fails if ``container`` contains ``item`` one or more times.</doc>
+<arguments>
+<arg>${deployment_list}</arg>
+<arg>frontend</arg>
+</arguments>
+<status status="PASS" starttime="20180522 14:51:22.869" endtime="20180522 14:51:22.869"></status>
+</kw>
+<doc>Delete deployment.</doc>
+<tags>
+<tag>test1</tag>
+</tags>
+<status status="PASS" starttime="20180522 14:51:19.636" endtime="20180522 14:51:22.870" critical="yes"></status>
+</test>
+<test id="s1-t5" name="scale deployment">
+<kw name="create_deployment">
+<arguments>
+<arg>${deployment_name1}</arg>
+</arguments>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>${create_deployment} ${deployment_name}</arg>
+</arguments>
+<assign>
+<var>${output}</var>
+</assign>
+<msg timestamp="20180522 14:51:22.872" level="INFO">Executing command 'kubectl create -f frontend-deployment.yaml'.</msg>
+<msg timestamp="20180522 14:51:23.943" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20180522 14:51:23.943" level="INFO">${output} = deployment.apps "frontend" created</msg>
+<status status="PASS" starttime="20180522 14:51:22.872" endtime="20180522 14:51:23.943"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${output}</arg>
+</arguments>
+<msg timestamp="20180522 14:51:23.944" level="INFO">deployment.apps "frontend" created</msg>
+<status status="PASS" starttime="20180522 14:51:23.943" endtime="20180522 14:51:23.944"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:22.872" endtime="20180522 14:51:23.944"></status>
+</kw>
+<kw name="scale_deployment">
+<arguments>
+<arg>${deployment_name1}</arg>
+<arg>${desired_numbers}</arg>
+</arguments>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>${scale_deployment} --replicas=${desired_numbers} -f ${deployment_name}</arg>
+</arguments>
+<assign>
+<var>${scale_out}</var>
+</assign>
+<msg timestamp="20180522 14:51:23.946" level="INFO">Executing command 'kubectl scale --replicas=4 -f frontend-deployment.yaml'.</msg>
+<msg timestamp="20180522 14:51:24.892" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20180522 14:51:24.892" level="INFO">${scale_out} = deployment.apps "frontend" scaled</msg>
+<status status="PASS" starttime="20180522 14:51:23.946" endtime="20180522 14:51:24.892"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${scale_out}</arg>
+</arguments>
+<msg timestamp="20180522 14:51:24.893" level="INFO">deployment.apps "frontend" scaled</msg>
+<status status="PASS" starttime="20180522 14:51:24.893" endtime="20180522 14:51:24.893"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:23.945" endtime="20180522 14:51:24.893"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>${describe_deployment}</arg>
+<arg>${deployment_label}</arg>
+</arguments>
+<assign>
+<var>${describe_deployment_out}</var>
+</assign>
+<msg timestamp="20180522 14:51:24.896" level="INFO">Executing command 'kubectl describe deployment'.</msg>
+<msg timestamp="20180522 14:51:26.168" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20180522 14:51:26.168" level="INFO">${describe_deployment_out} = Name:                   frontend
+Namespace:              default
+CreationTimestamp:      Tue, 22 May 2018 09:21:23 +0000
+Labels:                 &lt;none&gt;
+Annotations:            deployment.kubernetes.io...</msg>
+<status status="PASS" starttime="20180522 14:51:24.895" endtime="20180522 14:51:26.169"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${describe_deployment_out}</arg>
+</arguments>
+<msg timestamp="20180522 14:51:26.173" level="INFO">Name:                   frontend
+Namespace:              default
+CreationTimestamp:      Tue, 22 May 2018 09:21:23 +0000
+Labels:                 &lt;none&gt;
+Annotations:            deployment.kubernetes.io/revision=1
+Selector:               app=guestbook,tier=frontend
+Replicas:               4 desired | 4 updated | 4 total | 2 available | 2 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=guestbook
+           tier=frontend
+  Containers:
+   php-redis:
+    Image:      gcr.io/google-samples/gb-frontend:v4
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Requests:
+      cpu:     100m
+      memory:  100Mi
+    Environment:
+      GET_HOSTS_FROM:  dns
+    Mounts:            &lt;none&gt;
+  Volumes:             &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      False   MinimumReplicasUnavailable
+  Progressing    True    ReplicaSetUpdated
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   frontend-5c548f4769 (4/4 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  2s    deployment-controller  Scaled up replica set frontend-5c548f4769 to 3
+  Normal  ScalingReplicaSet  1s    deployment-controller  Scaled up replica set frontend-5c548f4769 to 4
+
+
+Name:                   kube-ops-view
+Namespace:              default
+CreationTimestamp:      Sun, 29 Apr 2018 08:53:26 +0000
+Labels:                 application=kube-ops-view
+                        version=v0.7.1
+Annotations:            deployment.kubernetes.io/revision=1
+                        kubectl.kubernetes.io/last-applied-configuration={"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{},"labels":{"application":"kube-ops-view","version":"v0.7.1"},"name":...
+Selector:               application=kube-ops-view
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  1 max unavailable, 1 max surge
+Pod Template:
+  Labels:           application=kube-ops-view
+                    version=v0.7.1
+  Service Account:  kube-ops-view
+  Containers:
+   service:
+    Image:      hjacobs/kube-ops-view:0.7.1
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Args:
+      --redis-url=redis://kube-ops-view-redis:6379
+    Limits:
+      cpu:     200m
+      memory:  100Mi
+    Requests:
+      cpu:        50m
+      memory:     50Mi
+    Readiness:    http-get http://:8080/health delay=5s timeout=1s period=10s #success=1 #failure=3
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   kube-ops-view-6f9c4d8999 (1/1 replicas created)
+Events:          &lt;none&gt;
+
+
+Name:                   kube-ops-view-redis
+Namespace:              default
+CreationTimestamp:      Sun, 29 Apr 2018 08:53:26 +0000
+Labels:                 application=kube-ops-view-redis
+                        version=v0.0.1
+Annotations:            deployment.kubernetes.io/revision=1
+                        kubectl.kubernetes.io/last-applied-configuration={"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{},"labels":{"application":"kube-ops-view-redis","version":"v0.0.1"},"...
+Selector:               application=kube-ops-view-redis
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  1 max unavailable, 1 max surge
+Pod Template:
+  Labels:  application=kube-ops-view-redis
+           version=v0.0.1
+  Containers:
+   redis:
+    Image:      redis:3.2-alpine
+    Port:       6379/TCP
+    Host Port:  0/TCP
+    Limits:
+      cpu:     200m
+      memory:  100Mi
+    Requests:
+      cpu:        50m
+      memory:     50Mi
+    Readiness:    tcp-socket :6379 delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   kube-ops-view-redis-5cb9899f5f (1/1 replicas created)
+Events:          &lt;none&gt;
+
+
+Name:                   load-generator
+Namespace:              default
+CreationTimestamp:      Mon, 30 Apr 2018 12:47:41 +0000
+Labels:                 run=load-generator
+Annotations:            deployment.kubernetes.io/revision=1
+Selector:               run=load-generator
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  1 max unavailable, 1 max surge
+Pod Template:
+  Labels:  run=load-generator
+  Containers:
+   load-generator:
+    Image:      busybox
+    Port:       &lt;none&gt;
+    Host Port:  &lt;none&gt;
+    Args:
+      /bin/sh
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   load-generator-7bbbb4fdd4 (1/1 replicas created)
+Events:          &lt;none&gt;
+
+
+Name:                   nginx-deployment
+Namespace:              default
+CreationTimestamp:      Mon, 14 May 2018 09:10:49 +0000
+Labels:                 app=nginx
+Annotations:            deployment.kubernetes.io/revision=3
+                        kubectl.kubernetes.io/last-applied-configuration={"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"nginx"},"name":"nginx-deployment","namespace":"default"},"spe...
+Selector:               app=nginx
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=nginx
+  Containers:
+   nginx:
+    Image:      nginx:1.9.1
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Requests:
+      cpu:        600m
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   nginx-deployment-546bfcbbbb (1/1 replicas created)
+Events:          &lt;none&gt;
+
+
+Name:                   php-apache
+Namespace:              default
+CreationTimestamp:      Mon, 14 May 2018 08:45:13 +0000
+Labels:                 run=php-apache
+Annotations:            deployment.kubernetes.io/revision=1
+Selector:               run=php-apache
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  1 max unavailable, 1 max surge
+Pod Template:
+  Labels:  run=php-apache
+  Containers:
+   php-apache:
+    Image:      k8s.gcr.io/hpa-example
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Requests:
+      cpu:        200m
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   php-apache-8699449574 (1/1 replicas created)
+Events:          &lt;none&gt;</msg>
+<status status="PASS" starttime="20180522 14:51:26.172" endtime="20180522 14:51:26.173"></status>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<arguments>
+<arg>${describe_deployment_out }</arg>
+<arg>${desired_numbers} desired</arg>
+</arguments>
+<status status="PASS" starttime="20180522 14:51:26.193" endtime="20180522 14:51:26.193"></status>
+</kw>
+<doc>scale deployment</doc>
+<tags>
+<tag>test1</tag>
+</tags>
+<status status="PASS" starttime="20180522 14:51:22.871" endtime="20180522 14:51:26.194" critical="yes"></status>
+</test>
+<test id="s1-t6" name="upgrade deployment">
+<kw name="create_deployment">
+<arguments>
+<arg>${deployment_name1}</arg>
+</arguments>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>${create_deployment} ${deployment_name}</arg>
+</arguments>
+<assign>
+<var>${output}</var>
+</assign>
+<msg timestamp="20180522 14:51:26.198" level="INFO">Executing command 'kubectl create -f frontend-deployment.yaml'.</msg>
+<msg timestamp="20180522 14:51:27.090" level="INFO">Command exited with return code 1.</msg>
+<msg timestamp="20180522 14:51:27.091" level="INFO">${output} = </msg>
+<status status="PASS" starttime="20180522 14:51:26.197" endtime="20180522 14:51:27.091"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${output}</arg>
+</arguments>
+<msg timestamp="20180522 14:51:27.092" level="INFO"></msg>
+<status status="PASS" starttime="20180522 14:51:27.091" endtime="20180522 14:51:27.092"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:26.196" endtime="20180522 14:51:27.093"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>${get_deployment}</arg>
+</arguments>
+<assign>
+<var>${deployment_list}</var>
+</assign>
+<msg timestamp="20180522 14:51:27.095" level="INFO">Executing command 'kubectl get deployments'.</msg>
+<msg timestamp="20180522 14:51:28.090" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20180522 14:51:28.090" level="INFO">${deployment_list} = NAME                  DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+frontend              4         4         4            4           4s
+kube-ops-view         1         1         1            1   ...</msg>
+<status status="PASS" starttime="20180522 14:51:27.094" endtime="20180522 14:51:28.090"></status>
+</kw>
+<kw name="Split String" library="String">
+<doc>Splits the ``string`` using ``separator`` as a delimiter string.</doc>
+<arguments>
+<arg>${deployment_list}</arg>
+</arguments>
+<assign>
+<var>${deployment_list}</var>
+</assign>
+<msg timestamp="20180522 14:51:28.092" level="INFO">${deployment_list} = ['NAME', 'DESIRED', 'CURRENT', 'UP-TO-DATE', 'AVAILABLE', 'AGE', 'frontend', '4', '4', '4', '4', '4s', 'kube-ops-view', '1', '1', '1', '1', '23d', 'kube-ops-view-redis', '1', '1', '1', '1', '23d', 'lo...</msg>
+<status status="PASS" starttime="20180522 14:51:28.091" endtime="20180522 14:51:28.092"></status>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<arguments>
+<arg>${deployment_list}</arg>
+<arg>${deployment_label}</arg>
+</arguments>
+<status status="PASS" starttime="20180522 14:51:28.093" endtime="20180522 14:51:28.093"></status>
+</kw>
+<kw name="upgrade_deployment">
+<arguments>
+<arg>${deployment_label}</arg>
+<arg>${image_name}</arg>
+<arg>${image_version}</arg>
+</arguments>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>kubectl set image deployments/${deployment_label} *=${image_name}:${image_version} --all</arg>
+</arguments>
+<assign>
+<var>${upgarde_image}</var>
+</assign>
+<msg timestamp="20180522 14:51:28.096" level="INFO">Executing command 'kubectl set image deployments/frontend *=nginx:1.9.1 --all'.</msg>
+<msg timestamp="20180522 14:51:29.047" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20180522 14:51:29.048" level="INFO">${upgarde_image} = deployment.apps "frontend" image updated</msg>
+<status status="PASS" starttime="20180522 14:51:28.096" endtime="20180522 14:51:29.048"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${upgarde_image}</arg>
+</arguments>
+<msg timestamp="20180522 14:51:29.049" level="INFO">deployment.apps "frontend" image updated</msg>
+<status status="PASS" starttime="20180522 14:51:29.048" endtime="20180522 14:51:29.049"></status>
+</kw>
+<status status="PASS" starttime="20180522 14:51:28.094" endtime="20180522 14:51:29.049"></status>
+</kw>
+<kw name="Execute Command" library="SSHLibrary">
+<doc>Executes ``command`` on the remote machine and returns its outputs.</doc>
+<arguments>
+<arg>${describe_deployment}</arg>
+<arg>frontend</arg>
+</arguments>
+<assign>
+<var>${describe_deployment_out}</var>
+</assign>
+<msg timestamp="20180522 14:51:29.051" level="INFO">Executing command 'kubectl describe deployment'.</msg>
+<msg timestamp="20180522 14:51:30.298" level="INFO">Command exited with return code 0.</msg>
+<msg timestamp="20180522 14:51:30.299" level="INFO">${describe_deployment_out} = Name:                   frontend
+Namespace:              default
+CreationTimestamp:      Tue, 22 May 2018 09:21:23 +0000
+Labels:                 app=guestbook
+                        tier=frontend
+Ann...</msg>
+<status status="PASS" starttime="20180522 14:51:29.050" endtime="20180522 14:51:30.299"></status>
+</kw>
+<kw name="Log" library="BuiltIn">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${describe_deployment_out}</arg>
+</arguments>
+<msg timestamp="20180522 14:51:30.300" level="INFO">Name:                   frontend
+Namespace:              default
+CreationTimestamp:      Tue, 22 May 2018 09:21:23 +0000
+Labels:                 app=guestbook
+                        tier=frontend
+Annotations:            deployment.kubernetes.io/revision=2
+Selector:               app=guestbook,tier=frontend
+Replicas:               4 desired | 2 updated | 5 total | 3 available | 2 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=guestbook
+           tier=frontend
+  Containers:
+   php-redis:
+    Image:      nginx:1.9.1
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Requests:
+      cpu:     100m
+      memory:  100Mi
+    Environment:
+      GET_HOSTS_FROM:  dns
+    Mounts:            &lt;none&gt;
+  Volumes:             &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    ReplicaSetUpdated
+OldReplicaSets:  frontend-5c548f4769 (3/3 replicas created)
+NewReplicaSet:   frontend-7995bf8cf9 (2/2 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  6s    deployment-controller  Scaled up replica set frontend-5c548f4769 to 3
+  Normal  ScalingReplicaSet  5s    deployment-controller  Scaled up replica set frontend-5c548f4769 to 4
+  Normal  ScalingReplicaSet  1s    deployment-controller  Scaled up replica set frontend-7995bf8cf9 to 1
+  Normal  ScalingReplicaSet  1s    deployment-controller  Scaled down replica set frontend-5c548f4769 to 3
+  Normal  ScalingReplicaSet  0s    deployment-controller  Scaled up replica set frontend-7995bf8cf9 to 2
+
+
+Name:                   kube-ops-view
+Namespace:              default
+CreationTimestamp:      Sun, 29 Apr 2018 08:53:26 +0000
+Labels:                 application=kube-ops-view
+                        version=v0.7.1
+Annotations:            deployment.kubernetes.io/revision=1
+                        kubectl.kubernetes.io/last-applied-configuration={"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{},"labels":{"application":"kube-ops-view","version":"v0.7.1"},"name":...
+Selector:               application=kube-ops-view
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  1 max unavailable, 1 max surge
+Pod Template:
+  Labels:           application=kube-ops-view
+                    version=v0.7.1
+  Service Account:  kube-ops-view
+  Containers:
+   service:
+    Image:      hjacobs/kube-ops-view:0.7.1
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Args:
+      --redis-url=redis://kube-ops-view-redis:6379
+    Limits:
+      cpu:     200m
+      memory:  100Mi
+    Requests:
+      cpu:        50m
+      memory:     50Mi
+    Readiness:    http-get http://:8080/health delay=5s timeout=1s period=10s #success=1 #failure=3
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   kube-ops-view-6f9c4d8999 (1/1 replicas created)
+Events:          &lt;none&gt;
+
+
+Name:                   kube-ops-view-redis
+Namespace:              default
+CreationTimestamp:      Sun, 29 Apr 2018 08:53:26 +0000
+Labels:                 application=kube-ops-view-redis
+                        version=v0.0.1
+Annotations:            deployment.kubernetes.io/revision=1
+                        kubectl.kubernetes.io/last-applied-configuration={"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{},"labels":{"application":"kube-ops-view-redis","version":"v0.0.1"},"...
+Selector:               application=kube-ops-view-redis
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  1 max unavailable, 1 max surge
+Pod Template:
+  Labels:  application=kube-ops-view-redis
+           version=v0.0.1
+  Containers:
+   redis:
+    Image:      redis:3.2-alpine
+    Port:       6379/TCP
+    Host Port:  0/TCP
+    Limits:
+      cpu:     200m
+      memory:  100Mi
+    Requests:
+      cpu:        50m
+      memory:     50Mi
+    Readiness:    tcp-socket :6379 delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   kube-ops-view-redis-5cb9899f5f (1/1 replicas created)
+Events:          &lt;none&gt;
+
+
+Name:                   load-generator
+Namespace:              default
+CreationTimestamp:      Mon, 30 Apr 2018 12:47:41 +0000
+Labels:                 run=load-generator
+Annotations:            deployment.kubernetes.io/revision=1
+Selector:               run=load-generator
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  1 max unavailable, 1 max surge
+Pod Template:
+  Labels:  run=load-generator
+  Containers:
+   load-generator:
+    Image:      busybox
+    Port:       &lt;none&gt;
+    Host Port:  &lt;none&gt;
+    Args:
+      /bin/sh
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   load-generator-7bbbb4fdd4 (1/1 replicas created)
+Events:          &lt;none&gt;
+
+
+Name:                   nginx-deployment
+Namespace:              default
+CreationTimestamp:      Mon, 14 May 2018 09:10:49 +0000
+Labels:                 app=nginx
+Annotations:            deployment.kubernetes.io/revision=3
+                        kubectl.kubernetes.io/last-applied-configuration={"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"nginx"},"name":"nginx-deployment","namespace":"default"},"spe...
+Selector:               app=nginx
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=nginx
+  Containers:
+   nginx:
+    Image:      nginx:1.9.1
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Requests:
+      cpu:        600m
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   nginx-deployment-546bfcbbbb (1/1 replicas created)
+Events:          &lt;none&gt;
+
+
+Name:                   php-apache
+Namespace:              default
+CreationTimestamp:      Mon, 14 May 2018 08:45:13 +0000
+Labels:                 run=php-apache
+Annotations:            deployment.kubernetes.io/revision=1
+Selector:               run=php-apache
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  1 max unavailable, 1 max surge
+Pod Template:
+  Labels:  run=php-apache
+  Containers:
+   php-apache:
+    Image:      k8s.gcr.io/hpa-example
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Requests:
+      cpu:        200m
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  &lt;none&gt;
+NewReplicaSet:   php-apache-8699449574 (1/1 replicas created)
+Events:          &lt;none&gt;</msg>
+<status status="PASS" starttime="20180522 14:51:30.300" endtime="20180522 14:51:30.301"></status>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<arguments>
+<arg>${describe_deployment_out }</arg>
+<arg>${image_name}:${image_version}</arg>
+</arguments>
+<status status="PASS" starttime="20180522 14:51:30.302" endtime="20180522 14:51:30.302"></status>
+</kw>
+<kw name="sh">
+<msg timestamp="20180522 14:51:30.311" level="FAIL">No keyword with name 'sh' found.</msg>
+<status status="FAIL" starttime="20180522 14:51:30.311" endtime="20180522 14:51:30.311"></status>
+</kw>
+<doc>upgrade deployment</doc>
+<tags>
+<tag>sanity</tag>
+</tags>
+<status status="FAIL" starttime="20180522 14:51:26.195" endtime="20180522 14:51:30.313" critical="yes">No keyword with name 'sh' found.</status>
+</test>
+<kw name="Close All Connections" library="SSHLibrary" type="teardown">
+<doc>Closes all open connections.</doc>
+<status status="PASS" starttime="20180522 14:51:30.315" endtime="20180522 14:51:30.317"></status>
+</kw>
+<doc>Kuber Demo.</doc>
+<status status="FAIL" starttime="20180522 14:51:11.652" endtime="20180522 14:51:30.317"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="5" fail="1">Critical Tests</stat>
+<stat pass="5" fail="1">All Tests</stat>
+</total>
+<tag>
+<stat pass="0" fail="1">sanity</stat>
+<stat pass="3" fail="0">test1</stat>
+</tag>
+<suite>
+<stat pass="5" fail="1" id="s1" name="Kuber">Kuber</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

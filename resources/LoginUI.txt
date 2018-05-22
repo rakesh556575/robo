@@ -1,0 +1,11 @@
+*** Variables ***
+${username}            admin
+${password}            MaharaDemo
+${Browser}             Chrome
+${SiteUrl}             http://demo.mahara.org
+${DashboardTitle}      Dashboard - Mahara Demo
+${Delay}               5s
+${LoginUserName Id}    id=login_login_username                   #Login username Field
+${LoginPassword Id}    id=login_login_password                   #Login Password Field
+${LoginButton Id}      id=login_submit                           #Login Button
+${logout}              //*[@id='navuser']/li[4]/a/span[2]

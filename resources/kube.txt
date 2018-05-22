@@ -1,0 +1,17 @@
+*** Variables ***
+${HOST}                174.138.54.154
+${USERNAME}            root
+${PASSWORD}            2top90!
+@{Node_list}=              master  node-01  node-02  node-03
+${get_nodes}            kubectl get nodes
+${get_deployment}       kubectl get deployments
+${create_deployment}    kubectl create -f
+${deployment_name}      frontend-deployment.yaml
+${delete_deployment}    kubectl delete deployment
+${scale_deployment}     kubectl scale
+${describe_deployment}  kubectl describe deployment
+${deployment_label}     frontend
+${deployment_name1}     frontend-deployment.yaml
+${desired_numbers}      4
+${image_name}           nginx
+${image_version}        1.9.1
