@@ -38,7 +38,7 @@ create deployment
 
 Delete deployment
     [Tags]  test1
-    [Documentation]    Delete deployment.
+    [Documentation]    Delete deployment1.
     delete_deployment  ${deployment_label}
     ${deployment_list}  Execute Command  ${get_deployment}
     ${deployment_list}=    Split String    ${deployment_list}
