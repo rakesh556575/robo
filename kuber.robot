@@ -64,7 +64,9 @@ upgrade deployment
     ${describe_deployment_out}  Execute Command  ${describe_deployment}  frontend
     Log  ${describe_deployment_out}
     should contain   ${describe_deployment_out }  ${image_name}:${image_version}
-    sh
+
+
+
 *** Keywords ***
 Open Connection And Log In
    Open Connection     ${HOST}
